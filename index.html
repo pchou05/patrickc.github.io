@@ -12,13 +12,10 @@
             box-sizing: border-box;
         }
         header {
-            background-color: rgba(88, 100, 29, 0.7);
-            background-image: url("assets/Joshua Tree Photo 2023.JPG");
-            background-size: cover;
-            background-position: center;
-            color: #231F20;
+            background-color: #58641D;
+            color: white;
             padding: 1rem;
-            text-align: center;
+            text-align: left;
         }
         .hero {
             position: relative;
@@ -70,6 +67,37 @@
             transform: scale(1.1);
             background-color: #a03820;
         }
+        .portrait-container {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            z-index: 10;
+            margin-top: 1rem;
+            cursor: crosshair;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+        .portrait-base {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .portrait-reveal-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        #reveal-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -83,31 +111,205 @@
         <button class="particle-button" id="particle-2">Robotics</button>
         <button class="particle-button" id="particle-3">Projects</button>
         <h1 id="hero-title">Hello, I'm Patrick Chou</h1>
-        <img src="assets/lineArtPortrait.png" alt="Portrait" style="width: 150px; height: auto; position: relative; z-index: 10; margin-top: 1rem;">
-    <script>
-        function typewriterEffect(element, text, speed) {
-        let i = 0;
-        function type() {
-            if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-            }
-        }
-        type();
-        }
-
-        const heroTitleElement = document.getElementById('hero-title');
-        const heroTitleText = "Hello, I'm Patrick Chou";
-        heroTitleElement.textContent = ""; // Clear initial text
-        typewriterEffect(heroTitleElement, heroTitleText, 150);
-    </script>
+        <div class="portrait-container" id="portrait-container">
+            <img src="assets/lineArtPortrait.png" alt="Portrait Base" class="portrait-base">
+            <div class="portrait-reveal-layer">
+                <canvas id="reveal-canvas"></canvas>
+            </div>
+        </div>
     </div>
 
     <script>
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         const heroTitle = document.getElementById('hero-title');
+        
+        // Portrait reveal setup
+        const portraitContainer = document.getElementById('portrait-container');
+        const revealCanvas = document.getElementById('reveal-canvas');
+        const revealCtx = revealCanvas.getContext('2d');
+        
+        // Load the reveal image
+        const revealImg = new Image();
+        revealImg.src = 'assets/SeniorPortrait.png';
+        
+        // Set canvas size to match container
+        revealCanvas.width = 150;
+        revealCanvas.height = 150;
+        
+        // Create an offscreen canvas for the mask
+        const maskCanvas = document.createElement('canvas');
+        maskCanvas.width = 150;
+        maskCanvas.height = 150;
+        const maskCtx = maskCanvas.getContext('2d');
+        
+        let lastX = 0;
+        let lastY = 0;
+        let trail = [];
+        let isOverPortrait = false;
+        let velocity = { x: 0, y: 0 };
+        let lastTime = Date.now();
+        
+        portraitContainer.addEventListener('mouseenter', (e) => {
+            isOverPortrait = true;
+            const rect = portraitContainer.getBoundingClientRect();
+            lastX = e.clientX - rect.left;
+            lastY = e.clientY - rect.top;
+            velocity = { x: 0, y: 0 };
+            lastTime = Date.now();
+        });
+        
+        portraitContainer.addEventListener('mousemove', (e) => {
+            if (!isOverPortrait) return;
+            
+            const rect = portraitContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate velocity based on mouse movement
+            const currentTime = Date.now();
+            const dt = Math.max(currentTime - lastTime, 1);
+            const dx = x - lastX;
+            const dy = y - lastY;
+            
+            velocity.x = dx / dt * 15;
+            velocity.y = dy / dt * 15;
+            
+            // Add multiple particles for smoother glass effect
+            const speed = Math.sqrt(dx * dx + dy * dy);
+            const numParticles = Math.max(1, Math.floor(speed / 3));
+            
+            for (let i = 0; i < numParticles; i++) {
+                const t = i / numParticles;
+                const px = lastX + dx * t;
+                const py = lastY + dy * t;
+                const angle = Math.atan2(dy, dx) + (Math.random() - 0.5) * 0.3;
+                const spreadSpeed = speed * 0.3;
+                
+                trail.push({ 
+                    x: px + (Math.random() - 0.5) * 5, 
+                    y: py + (Math.random() - 0.5) * 5, 
+                    vx: velocity.x + Math.cos(angle) * spreadSpeed * (Math.random() - 0.5),
+                    vy: velocity.y + Math.sin(angle) * spreadSpeed * (Math.random() - 0.5),
+                    life: 1.0,
+                    size: 20 + Math.random() * 15
+                });
+            }
+            
+            // Limit trail length
+            if (trail.length > 100) {
+                trail.splice(0, trail.length - 100);
+            }
+            
+            lastX = x;
+            lastY = y;
+            lastTime = currentTime;
+        });
+        
+        portraitContainer.addEventListener('mouseleave', () => {
+            isOverPortrait = false;
+        });
+        
+        // Update trail with physics - liquid glass effect
+        function updateTrail() {
+            // Sort by life for proper layering (older particles behind)
+            trail.sort((a, b) => b.life - a.life);
+            
+            trail.forEach((point, index) => {
+                // Apply inertia with smooth deceleration
+                point.x += point.vx;
+                point.y += point.vy;
+                
+                // Glass-like friction - very smooth
+                point.vx *= 0.97;
+                point.vy *= 0.97;
+                
+                // Add slight gravity/drip effect
+                point.vy += 0.05;
+                
+                // Decrease life slower for longer trails
+                point.life -= 0.012;
+                
+                // Draw with glass-like gradients
+                if (point.life > 0) {
+                    maskCtx.globalCompositeOperation = 'source-over';
+                    
+                    const size = point.size * point.life;
+                    const alpha = Math.pow(point.life, 0.7); // Smoother fade
+                    
+                    // Create radial gradient for glass effect
+                    const gradient = maskCtx.createRadialGradient(
+                        point.x, point.y, 0,
+                        point.x, point.y, size
+                    );
+                    
+                    gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha * 0.9})`);
+                    gradient.addColorStop(0.5, `rgba(255, 255, 255, ${alpha * 0.6})`);
+                    gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                    
+                    maskCtx.fillStyle = gradient;
+                    maskCtx.beginPath();
+                    maskCtx.arc(point.x, point.y, size, 0, Math.PI * 2);
+                    maskCtx.fill();
+                    
+                    // Add highlight for glossy effect
+                    if (point.life > 0.7) {
+                        const highlightGradient = maskCtx.createRadialGradient(
+                            point.x - size * 0.3, point.y - size * 0.3, 0,
+                            point.x - size * 0.3, point.y - size * 0.3, size * 0.5
+                        );
+                        highlightGradient.addColorStop(0, `rgba(255, 255, 255, ${alpha * 0.4})`);
+                        highlightGradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                        
+                        maskCtx.fillStyle = highlightGradient;
+                        maskCtx.beginPath();
+                        maskCtx.arc(point.x, point.y, size, 0, Math.PI * 2);
+                        maskCtx.fill();
+                    }
+                }
+            });
+            
+            // Remove dead trail points
+            trail = trail.filter(point => point.life > 0 && 
+                                          point.x > -100 && point.x < 250 && 
+                                          point.y > -100 && point.y < 250);
+        }
+        
+        // Animation loop for portrait reveal
+        function animateReveal() {
+            // Clear the reveal canvas
+            revealCtx.clearRect(0, 0, 150, 150);
+            
+            // Clear and redraw mask
+            maskCtx.clearRect(0, 0, 150, 150);
+            
+            // Update trail physics
+            updateTrail();
+            
+            // Fade the entire mask slightly over time for a dissolving effect
+            // FADE SPEED: Change this value (0.005) - higher = faster fade, lower = slower fade
+            // Example: 0.02 = fast fade, 0.002 = slow fade
+            maskCtx.globalCompositeOperation = 'destination-out';
+            maskCtx.fillStyle = 'rgba(255, 255, 255, 0.005)';
+            maskCtx.fillRect(0, 0, 150, 150);
+            
+            // Draw the reveal image using the mask
+            revealCtx.save();
+            
+            // Use the mask as a clipping region
+            revealCtx.drawImage(maskCanvas, 0, 0);
+            revealCtx.globalCompositeOperation = 'source-in';
+            revealCtx.drawImage(revealImg, 0, 0, 150, 150);
+            
+            revealCtx.restore();
+            
+            requestAnimationFrame(animateReveal);
+        }
+        
+        // Start animation when image loads
+        revealImg.onload = () => {
+            animateReveal();
+        };
         
         // Set canvas size
         function resizeCanvas() {
@@ -121,8 +323,7 @@
         function getTextBounds() {
             const titleRect = heroTitle.getBoundingClientRect();
             const heroRect = document.getElementById('hero').getBoundingClientRect();
-            const portraitImg = document.querySelector('.hero img');
-            const portraitRect = portraitImg.getBoundingClientRect();
+            const portraitRect = portraitContainer.getBoundingClientRect();
             
             return [
                 {
@@ -142,21 +343,13 @@
 
         // Capsule collision detection helper
         function capsuleDistance(x1, y1, w1, h1, x2, y2, w2, h2) {
-            // Treat capsules as rectangles with rounded ends
-            // Calculate the distance between two capsule centers accounting for their shapes
-            const r1 = h1 / 2; // radius of first capsule's rounded ends
-            const r2 = h2 / 2; // radius of second capsule's rounded ends
+            const r1 = h1 / 2;
+            const r2 = h2 / 2;
             
-            // Get the effective length of the straight section
-            const len1 = w1 - h1;
-            const len2 = w2 - h2;
-            
-            // Calculate center-to-center distance
             const dx = x2 - x1;
             const dy = y2 - y1;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            // Minimum distance for collision (sum of radii plus half-lengths)
             const minDist = r1 + r2;
             
             return { distance, minDist, dx, dy };
@@ -164,7 +357,6 @@
 
         // Capsule-to-rectangle collision
         function capsuleRectCollision(cx, cy, width, height, rx, ry, rw, rh) {
-            // Expand rectangle by capsule's radius for easier collision detection
             const radius = height / 2;
             const expandedRect = {
                 x: rx - radius,
@@ -173,7 +365,6 @@
                 height: rh + radius * 2
             };
             
-            // Find closest point on expanded rectangle to capsule center
             const closestX = Math.max(expandedRect.x, Math.min(cx, expandedRect.x + expandedRect.width));
             const closestY = Math.max(expandedRect.y, Math.min(cy, expandedRect.y + expandedRect.height));
             
@@ -196,7 +387,6 @@
                 
                 let isValidPosition = false;
                 
-                // Wait for button to render to get accurate dimensions
                 setTimeout(() => {
                     this.width = this.button.offsetWidth;
                     this.height = this.button.offsetHeight;
@@ -221,14 +411,12 @@
                 this.vy = (Math.random() - 0.5) * 4;
                 this.color = '#BB4430';
                 
-                // Get actual button dimensions after a short delay
                 setTimeout(() => {
                     this.width = this.button.offsetWidth;
                     this.height = this.button.offsetHeight;
                     this.updateButtonPosition();
                 }, 10);
                 
-                // Add hover event listeners
                 this.button.addEventListener('mouseenter', () => {
                     this.isHovered = true;
                     this.savedVx = this.vx;
@@ -253,27 +441,24 @@
             update(particles, textBounds) {
                 if (!this.width || !this.height) return;
                 
-                // Update position (only if not hovered)
                 if (!this.isHovered) {
                     this.x += this.vx;
                     this.y += this.vy;
 
-                    // Bounce off walls (accounting for capsule shape)
                     const radius = this.height / 2;
                     const halfWidth = this.width / 2;
                     
                     if (this.x + halfWidth > canvas.width || this.x - halfWidth < 0) {
                         this.vx = -this.vx;
-                        this.savedVx = this.vx; // Update saved velocity
+                        this.savedVx = this.vx;
                         this.x = Math.max(halfWidth, Math.min(canvas.width - halfWidth, this.x));
                     }
                     if (this.y + radius > canvas.height || this.y - radius < 0) {
                         this.vy = -this.vy;
-                        this.savedVy = this.vy; // Update saved velocity
+                        this.savedVy = this.vy;
                         this.y = Math.max(radius, Math.min(canvas.height - radius, this.y));
                     }
 
-                    // Collide with other particles (capsule-to-capsule)
                     particles.forEach(other => {
                         if (other === this || !other.width || !other.height) return;
                         
@@ -283,10 +468,7 @@
                         );
                         
                         if (result.distance < result.minDist) {
-                            // Calculate collision response
                             const angle = Math.atan2(result.dy, result.dx);
-                            
-                            // Separate particles
                             const overlap = result.minDist - result.distance;
                             
                             if (!this.isHovered) {
@@ -298,7 +480,6 @@
                                 other.y += Math.sin(angle) * overlap / 2;
                             }
                             
-                            // Exchange velocities (elastic collision) - only for non-hovered particles
                             if (!this.isHovered && !other.isHovered) {
                                 const tempVx = this.vx;
                                 const tempVy = this.vy;
@@ -307,19 +488,16 @@
                                 other.vx = tempVx;
                                 other.vy = tempVy;
                                 
-                                // Update saved velocities
                                 this.savedVx = this.vx;
                                 this.savedVy = this.vy;
                                 other.savedVx = other.vx;
                                 other.savedVy = other.vy;
                             } else if (!this.isHovered) {
-                                // If only this particle is moving, reflect it
                                 this.vx = -this.vx;
                                 this.vy = -this.vy;
                                 this.savedVx = this.vx;
                                 this.savedVy = this.vy;
                             } else if (!other.isHovered) {
-                                // If only the other particle is moving, reflect it
                                 other.vx = -other.vx;
                                 other.vy = -other.vy;
                                 other.savedVx = other.vx;
@@ -328,7 +506,6 @@
                         }
                     });
 
-                    // Collide with text boxes (capsule-to-rectangle)
                     textBounds.forEach(box => {
                         const result = capsuleRectCollision(
                             this.x, this.y, this.width, this.height,
@@ -337,7 +514,6 @@
                         
                         if (result.collision) {
                             if (result.distance === 0) {
-                                // Inside the box, push out randomly
                                 this.vx = -this.vx;
                                 this.vy = -this.vy;
                                 this.x += (Math.random() - 0.5) * 20;
@@ -345,16 +521,13 @@
                                 this.savedVx = this.vx;
                                 this.savedVy = this.vy;
                             } else {
-                                // Normalize collision vector
                                 const nx = result.dx / result.distance;
                                 const ny = result.dy / result.distance;
                                 
-                                // Push particle out
                                 const overlap = result.radius - result.distance;
                                 this.x += nx * overlap;
                                 this.y += ny * overlap;
                                 
-                                // Reflect velocity
                                 const dotProduct = this.vx * nx + this.vy * ny;
                                 this.vx -= 2 * dotProduct * nx;
                                 this.vy -= 2 * dotProduct * ny;
@@ -395,7 +568,6 @@
         document.querySelectorAll('.particle-button').forEach((button, index) => {
             button.addEventListener('click', () => {
                 alert(`You clicked ${labels[index]}!`);
-                // Add your navigation logic here
             });
         });
     </script>

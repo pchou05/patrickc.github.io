@@ -12,6 +12,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 header {
     background-color: var(--primary-green);
@@ -56,8 +57,8 @@ header {
     position: absolute;
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
-    border: 2px solid var(--text-color-black);
-    border-radius: 50px;
+    border: .5px solid var(--text-color-black);
+    border-radius: 60px;
     cursor: pointer;
     background-color: var(--background-color);
     color: var(--text-color-black);
@@ -78,7 +79,7 @@ header {
     height: 240px;
     z-index: 10;
     margin-top: 1rem;
-    cursor: crosshair;
+    cursor: cursor;
     overflow: hidden;
     border-radius: 5px;
 }
@@ -116,7 +117,7 @@ header {
     flex-wrap: wrap;
     background: var(--background-color);
     border-radius: 15px;
-    border: 2px solid var(--text-color-black);
+    border: .5px solid var(--text-color-black);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -148,16 +149,29 @@ body {
     background: var(--background--color);
     border: 1px solid var(--text-color-black);
     border-radius: 8px;
-    margin: 15px;
+    margin: 20px;
     padding: 20px;
-    width: 300px;
-    text-align: center;
+    width: 350px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 .card h2 {
     font-size: 1.5em;
-    margin-bottom: 10px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin-bottom: 10px; 
+    flex-direction: column;
+    justify-content: flex-end;
+
 }
 .card p {
     font-size: 1em;
-    color: #555;
+    font-family: 'Fira Code', monospace;
+    color: var(--text-color-black);
+    margin-top: 10;
+    margin-bottom: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }

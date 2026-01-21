@@ -10,8 +10,8 @@
 
     <div class="hero" id="hero">
         <canvas id="particle-canvas"></canvas>
-        <button class="particle-button" id="particle-0"onclick="location.href='rocketry.html';">Rocketry</button>
-        <button class="particle-button" id="particle-1" onclick="location.href='robotics.html';">Robotics</button>
+        <button class="particle-button" id="particle-0"onclick="location.href='#rocketry';">Rocketry</button>
+        <button class="particle-button" id="particle-1" onclick="location.href='#robotics';">Robotics</button>
         <h1 id="hero-title"></h1>
         <div class="portrait-container" id="portrait-container">
             <img src="assets/lineArtPortrait.png" alt="Portrait Base" class="portrait-base">
@@ -65,5 +65,54 @@
     </section>
 
     <script type="module" src="js/init.js"></script>
+    <header>
+        <h1 id = "robotics" style="text-align: center; justify-content: center;">Robotics Work</h1>
+    </header>
+    <div class="container">
+        <div class="card">
+            <video width="100%" height="250" autoplay muted loop>
+                <source src="assets/Doppleganger.mov" type="video/mp4" >
+                Your browser does not support the video tag.
+            </video>
+            <h2>Dopplëganger</h2>
+            <p>Robot designed for the 2024 FRC season, capable of shooting foam rings both autonomously and via teleoperation. Worked on design, fabrication, and programming.</p>
+        </div>
+        <div class="card">
+            <iframe width="100%" height="250" src="https://www.youtube.com/embed/BdBHYb3ZArI?si=purTU0sHTGLLSI7S&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <h2>Fish.</h2>
+            <p> Robot designed for 2025 FRC season, capable of navigating the field and manipulating PVC pipes segments. Worked on climbing mechanism, end effector and wiring.
+            </p>
+        </div>
+    </div>
+    <header>
+        <h1 id = "rocketry" style="text-align: center; justify-content: center;">Rocketry Work</h1>
+    </header>
+    <div class="container">
+        <div class="card">
+            <image width="100%" height="auto" src="assets/PickleRick.png" alt = "Pickle Rick">
+            <video width="100%" height="150" src="assets/3.29 launch.mov" autoplay muted loop></video>
+            <h2>Pickle Rick</h2>
+            <p>Custom designed and 3D printed rocket capable of reaching 450 ft featuring on board flight computer. Capable of laucnhing and recovering 2 egg payload safely.
+            </p>
+        </div>
+        <div class="card">
+            <div style="text-align: center;">
+                <image width="250" height="250" src="assets/AirBrake.png" alt="AirBrakeCAD">
+            </div>
+            <h2>Air Brake</h2>
+            <p>Custom designed and 3D printed air brake system for model rockets. Designed to increase drag during asscent, allowing for a more controlled altitude control.</p>
+        </div>
+        <div class="card">
+            <image width="100%" height="auto" src="assets/LaunchRelay.png" alt="Launch Relay">
+            <h2>Wireless Launch Relay</h2>
+            <p>Remote detonation and launch control of model rockets through a web-based UI, featuring watchdog and heartbeat monitoring to ensure safe and reliable operation over long distances.</p>
+        </div>
+        <div class="card">
+            <video width="100%" height="200" src="assets/staticFire.mov" autoplay muted loop></video>
+            <h2>Static Fire Stand</h2>
+            <p>A robust stand designed to test the structural integrity of the airframe and validate ejection systems. It securely holds the rocket during hot fire tests, ensuring accurate and reliable performance assessments.</p>
+        </div>
+        
+    </div>
 </body>
 </html>

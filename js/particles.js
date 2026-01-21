@@ -48,7 +48,7 @@ function capsuleRectCollision(cx, cy, width, height, rx, ry, rw, rh) {
     const expandedRect = {
         x: rx - radius,
         y: ry - radius,
-        width: rw + radius * 2,
+        width: rw + radius * 5,
         height: rh + radius * 2
     };
     

@@ -105,21 +105,55 @@ header {
     height: 100%;
 }
 .about-me{
-    padding: 4rem 2rem;
+    padding: 5rem 2rem;
     background-color: var(--background-color);
     max-width: 1200px;
     margin: 0 auto;
+    text-align: center;
 }
-.info-card {
-    display: flex;
+.about-me h1{
+    padding: 4rem 2rem;
+    background-color: var(--background-color);
+    color: var(--primary-green);
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    align-items: center;
-    flex-wrap: wrap;
-    background: var(--background-color);
-    border-radius: 15px;
-    border: .5px solid var(--text-color-black);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    margin-right: 2.2rem;
 }
+
+.info-card {
+    background: var(--background--color);
+    border: 1px solid var(--text-color-black);
+    border-radius: 8px;
+    width: 100%;
+    margin-right: 20px;
+    grid-column: span 2;
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card h3 {
+    color: var(--text-color-black);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.info-card p {
+    font-size: 1em;
+    font-family: 'Fira Code', monospace;
+    color: var(--text-color-black);
+    margin-bottom: 1rem;
+    line-height: 1.8em;
+    text-align: left;
+}
+
+
 
 .slide-left {
     transform: translateX(-100px);

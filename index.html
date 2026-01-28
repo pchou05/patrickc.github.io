@@ -12,6 +12,7 @@
         <canvas id="particle-canvas"></canvas>
         <button class="particle-button" id="particle-0"onclick="location.href='#rocketry';">Rocketry</button>
         <button class="particle-button" id="particle-1" onclick="location.href='#robotics';">Robotics</button>
+        <button class="particle-button" id="particle-2" onclick="location.href='#photography';">Photography</button>
         <h1 id="hero-title"></h1>
         <div class="portrait-container" id="portrait-container">
             <img src="assets/lineArtPortrait.png" alt="Portrait Base" class="portrait-base">
@@ -71,7 +72,7 @@
         <div class="card">
             <iframe width="100%" height="250" src="https://www.youtube.com/embed/BdBHYb3ZArI?si=purTU0sHTGLLSI7S&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <h2>Fish.</h2>
-            <p> Robot designed for 2025 FRC season, capable of navigating the field and manipulating PVC pipes segments. Worked on climbing mechanism, end effector and wiring.
+            <p> Robot designed for 2025 FRC season, capable of navigating through obstacles and manipulating PVC pipes segments. Worked on climbing mechanism, end effector and wiring.
             </p>
         </div>
     </div>
@@ -83,14 +84,19 @@
             <image width="100%" height="auto" src="assets/PickleRick.png" alt = "Pickle Rick">
             <video width="100%" height="150" src="assets/3.29 launch.mov" autoplay muted loop></video>
             <h2>Pickle Rick</h2>
-            <p>Custom designed and 3D printed rocket capable of reaching 450 ft featuring on board flight computer. Capable of laucnhing and recovering 2 egg payload safely.
+            <p>Custom designed and 3D printed rocket capable of reaching 450 ft featuring on board flight computers. Capable of laucnhing and recovering 2 egg payload safely.
             </p>
         </div>
         <div class="card">
             <div style="text-align: center;">
-                <image width="250" height="250" src="assets/AirBrake.png" alt="AirBrakeCAD">
+                    <video width="100%" height="250" autoplay muted loop >
+                        <source src="assets/AirBreakDeployment.mov" type="video/mp4">
+                    </video>
+                    <video width="100%" height="250" autoplay muted loop>
+                        <source src="assets/AirBrakeVid.mp4" type="video/mp4">
+                    </video>
             </div>
-            <h2></h2>Air Brake</h2>
+            <h2>Air Brake</h2>
             <p>Custom designed and 3D printed air brake system for model rockets. Designed to increase drag during asscent, allowing for a more controlled altitude control.</p>
         </div>
         <div class="card">
@@ -105,6 +111,151 @@
         </div>
         
     </div>
+    <header>
+        <h1 id="other-engineering" style="text-align: center; justify-content: center; background-color: var(--primary-green);">Other Work</h1>
+    </header>
+    <div class="container">
+        <div class="card">
+            <image width="100%" height="auto" src="assets/microFluidic.png" alt="Microfluidic Tool">
+            <h2>Microfludic Device Analyzer</h2>
+            <p>Developed a script to simulate and verify microfludic mixing devices given an input of stls of the mixer. </p>
+        </div>
+    </div>
+    <header>
+        <h1 id = "photography" style="text-align: center; background-color: var(--primary-green); padding: 20px; color: white; font-family: 'Fira Code';">
+            My Artsy Side
+        </h1>
+    </header>
+    <h3 style="text-align: center; background-color: var(--primary-green); padding: 5px; color: white; font-family: 'Fira Code';">
+        My Photos
+    </h3>
+    <!-- First Carousel: Photography -->
+    <div id="photo-carousel" class="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="assets/orion nebula-1-1-1.jpg" alt="Photo 1">
+                <div class="carousel-caption">
+                    <p>Orion Nebula captured through long exposure astrophotography</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/MoonHighRes.jpg" alt="Photo 2">
+                <div class="carousel-caption">
+                    <p>High-resolution photo of the Moon captured from my backyard</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/JoshuaSunset.jpg" alt="Photo 3">
+                <div class="carousel-caption">
+                    <p>Sunset at Joshua Tree</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/FishRed.png" alt="Photo 4" style="height: 400px; width: auto; object-fit: cover; display: block; margin: 0 auto;">
+                <div class="carousel-caption">
+                    <p>Fish. in action @ Central Valley Regional Competition</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control prev" onclick="prevSlidePhoto()">&#10094;</button>
+        <button class="carousel-control next" onclick="nextSlidePhoto()">&#10095;</button>
+    </div>
+
+    <!-- Second Carousel: Doodles -->
+    <div>
+        <h3 style="text-align: center; background-color: var(--primary-green); padding: 5px; color: white; font-family: 'Fira Code';">
+            My Doodles
+        </h3>
+    </div>
+    <div id="doodles-carousel" class="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="assets/OhChute.png" alt="Doodle 1" style="height: 380px; object-fit: contain;">
+                <p>Oh Chute</p>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/SpaceChillis.png" alt="Doodle 2" style="height: 350px; object-fit: contain;">
+                <div class="carousel-caption">
+                    <p>Space Chillis</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/BendyBoi.png" style="height: 350px; object-fit: contain;">
+                <div class="carousel-caption">
+                    <p>Bendy Boi</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/TheIncident.png" alt="Doodle 4" style="height: 400px; width: auto; object-fit: cover; display: block; margin: 0 auto;">
+                <div class="carousel-caption">
+                    <p>"The Incident"</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control prev" onclick="prevSlideDoodles()">&#10094;</button>
+        <button class="carousel-control next" onclick="nextSlideDoodles()">&#10095;</button>
+    </div>
+
+    <script>
+        // Photo Carousel Controls
+        let currentIndexPhoto = 0;
+        let autoRotateIntervalPhoto = setInterval(nextSlidePhoto, 3000);
+
+        const carouselPhoto = document.getElementById('photo-carousel');
+        carouselPhoto.addEventListener('mouseenter', () => clearInterval(autoRotateIntervalPhoto));
+        carouselPhoto.addEventListener('mouseleave', () => autoRotateIntervalPhoto = setInterval(nextSlidePhoto, 3000));
+
+        function showSlidePhoto(index) {
+            const carouselInner = carouselPhoto.querySelector('.carousel-inner');
+            const totalSlides = carouselPhoto.querySelectorAll('.carousel-item').length;
+            if (index >= totalSlides) {
+                currentIndexPhoto = 0;
+            } else if (index < 0) {
+                currentIndexPhoto = totalSlides - 1;
+            } else {
+                currentIndexPhoto = index;
+            }
+            carouselInner.style.transform = `translateX(-${currentIndexPhoto * 100}%)`;
+        }
+
+        function nextSlidePhoto() {
+            showSlidePhoto(currentIndexPhoto + 1);
+        }
+
+        function prevSlidePhoto() {
+            showSlidePhoto(currentIndexPhoto - 1);
+        }
+
+        // Doodles Carousel Controls
+        let currentIndexDoodles = 0;
+        let autoRotateIntervalDoodles = setInterval(nextSlideDoodles, 3000);
+
+        const carouselDoodles = document.getElementById('doodles-carousel');
+        carouselDoodles.addEventListener('mouseenter', () => clearInterval(autoRotateIntervalDoodles));
+        carouselDoodles.addEventListener('mouseleave', () => autoRotateIntervalDoodles = setInterval(nextSlideDoodles, 3000));
+
+        function showSlideDoodles(index) {
+            const carouselInner = carouselDoodles.querySelector('.carousel-inner');
+            const totalSlides = carouselDoodles.querySelectorAll('.carousel-item').length;
+            if (index >= totalSlides) {
+                currentIndexDoodles = 0;
+            } else if (index < 0) {
+                currentIndexDoodles = totalSlides - 1;
+            } else {
+                currentIndexDoodles = index;
+            }
+            carouselInner.style.transform = `translateX(-${currentIndexDoodles * 100}%)`;
+        }
+
+        function nextSlideDoodles() {
+            showSlideDoodles(currentIndexDoodles + 1);
+        }
+
+        function prevSlideDoodles() {
+            showSlideDoodles(currentIndexDoodles - 1);
+        }
+    </script>
+
     <div style="height: 50px; font-family: 'Fira Code'; display: flex; align-items: center; justify-content: center; background-image: url('assets/Joshua Tree Photo 2023.JPG'); background-size: cover; background-position: center;">
         <footer>
             <p style="color: white; background-color: rgb(40,30,40,.4); padding: 5px; display: inline-block; border-radius: 5px; font-size: 1rem; text-align: center;">&copy; 2024 Patrick Chou. All rights reserved. Last Updated 1/21/26</p>

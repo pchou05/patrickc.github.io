@@ -17,7 +17,7 @@ initTypewriter(heroTitle, titleText, 100, 500);
 initPortraitReveal('portrait-container', 'reveal-canvas', 'assets/SeniorPortrait.png');
 
 // Initialize particles
-const labels = ['Rocketry', 'Robotics'];
+const labels = ['Rocketry', 'Robotics', 'Photography'];
 initParticles('particle-canvas', 'hero', 'hero-title', 'portrait-container', labels);
 
 // Initialize scroll animation
